@@ -1,7 +1,5 @@
 package core;
 
-import entity.Room;
-
 public class ComboItem {
     private int key;
     private String value;
@@ -18,7 +16,7 @@ public class ComboItem {
         this.value = value;
     }
 
-    public ComboItem(){
+    public ComboItem() {
 
     }
 
