@@ -21,7 +21,7 @@ public class RoomDao {
 
     public ArrayList<Room> findAll() {
         ArrayList<Room> roomList = new ArrayList<>();
-        String sql = "SELECT * FROM public.room ORDER BY room_id";
+        String sql = "SELECT * FROM public.room WHERE stock > 0 ORDER BY room_id";
         try {
             ResultSet rs = this.connection.createStatement().executeQuery(sql);
             while (rs.next()) {

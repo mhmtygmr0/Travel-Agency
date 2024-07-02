@@ -107,7 +107,6 @@ public class PersonelView extends Layout {
 
         this.loadReservationTable(null);
         this.loadReservationTableComponent();
-
         this.loadReservationRoomTable(null);
 
     }
@@ -318,6 +317,9 @@ public class PersonelView extends Layout {
         this.tableRowSelect(tbl_room);
         this.room_menu = new JPopupMenu();
 
+        this.txt_adults.setText("1");
+        this.txt_children.setText("1");
+
         this.btn_add_room.addActionListener(e -> {
             AddRoomView addRoomView = new AddRoomView();
             addRoomView.addWindowListener(new WindowAdapter() {
@@ -330,13 +332,15 @@ public class PersonelView extends Layout {
 
         this.room_menu.add("Add Reservation").addActionListener(e -> {
             int selectId = this.getTableSelectedRow(this.tbl_room, 0);
+
             JTextField[] roomJTextField = new JTextField[]{this.txt_season_strt_date, this.txt_season_fnsh_date, this.txt_adults, this.txt_children};
+
             if (Helper.isFieldListEmpty(roomJTextField)) {
                 Helper.showMsg("fill");
             } else {
                 int adult_numb = Integer.parseInt(this.txt_adults.getText());
                 int child_numb = Integer.parseInt(this.txt_children.getText());
-                /*AddReservationView reservationView = new AddReservationView(this.roomManager.getById(selectId), this.txt_season_strt_date.getText(), this.txt_season_fnsh_date.getText(), adult_numb, child_numb, null);
+                AddReservationView reservationView = new AddReservationView(this.roomManager.getById(selectId), this.txt_season_strt_date.getText(), this.txt_season_fnsh_date.getText(), adult_numb, child_numb, null);
                 reservationView.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
@@ -344,8 +348,6 @@ public class PersonelView extends Layout {
                         loadReservationTable(null);
                     }
                 });
-
-                 */
             }
         });
 
@@ -394,16 +396,13 @@ public class PersonelView extends Layout {
             Reservation selectReservation = this.reservationManager.getById(selectId);
             int selectRoomId = selectReservation.getRoom_id();
             Room selectRoom = this.roomManager.getById(selectRoomId);
-            /*UpdateReservationView reservationView = new UpdateReservationView(selectRoom, selectReservation.getCheck_in_date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), selectReservation.getCheck_out_date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), selectReservation.getAdult_count(), selectReservation.getChild_count(), selectReservation);
+            UpdateReservationView reservationView = new UpdateReservationView(selectRoom, selectReservation.getCheck_in_date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), selectReservation.getCheck_out_date().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), selectReservation.getAdult_count(), selectReservation.getChild_count(), selectReservation);
             reservationView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadReservationTable(null);
-
                 }
             });
-
-             */
         });
 
         this.reservation_menu.addSeparator();
@@ -432,8 +431,8 @@ public class PersonelView extends Layout {
 
     private void createUIComponents() throws ParseException {
         this.txt_season_strt_date = new JFormattedTextField(new MaskFormatter("##/##/####"));
-        this.txt_season_strt_date.setText("01/01/2020");
+        this.txt_season_strt_date.setText("01/07/2024");
         this.txt_season_fnsh_date = new JFormattedTextField(new MaskFormatter("##/##/####"));
-        this.txt_season_fnsh_date.setText("01/05/2030");
+        this.txt_season_fnsh_date.setText("01/08/2024");
     }
 }

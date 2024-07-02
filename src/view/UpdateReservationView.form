@@ -212,7 +212,7 @@
               <font size="12" style="1"/>
             </properties>
           </component>
-          <component id="ff816" class="javax.swing.JTextField" binding="txt_strt_date">
+          <component id="ff816" class="javax.swing.JTextField" binding="txt_start_date">
             <constraints>
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -451,7 +451,7 @@
             </constraints>
             <properties>
               <font size="12" style="1"/>
-              <text value="Guest ID :"/>
+              <text value="Guest TC ID :"/>
             </properties>
           </component>
           <component id="c2f2b" class="javax.swing.JTextField" binding="txt_guest_id">
