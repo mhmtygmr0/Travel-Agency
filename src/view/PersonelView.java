@@ -100,6 +100,31 @@ public class PersonelView extends Layout {
 
         this.loadRoomTable(null);
         this.loadRoomComponent();
+        this.loadRoomFilter();
+
+    }
+
+    public void loadRoomFilter() {
+        this.btn_room_search.addActionListener(e -> {
+
+            ComboItem selectedHotelItem = (ComboItem) cmb_hotel_name.getSelectedItem();
+            String hotelName = (selectedHotelItem != null) ? selectedHotelItem.getValue() : null;
+            Object selectedCityItem = cmb_hotel_city.getSelectedItem();
+            String cityName = (selectedCityItem != null) ? selectedCityItem.toString() : null;
+            String startDate = txt_season_strt_date.getText();
+            String endDate = txt_season_fnsh_date.getText();
+
+            ArrayList<Room> rooms = this.roomDao.searchForTable(
+                    hotelName,
+                    cityName,
+                    startDate,
+                    endDate
+            );
+
+            ArrayList<Object[]> roomRow = this.roomManager.getForTable(this.col_room.length, rooms);
+            loadRoomTable(roomRow);
+
+        });
     }
 
 
@@ -116,6 +141,14 @@ public class PersonelView extends Layout {
             dispose();
             LoginView loginView = new LoginView();
             loadHotelTable();
+        });
+
+        this.btn_room_reset.addActionListener(e -> {
+            this.cmb_hotel_name.setSelectedIndex(-1);
+            this.cmb_hotel_city.setSelectedIndex(-1);
+            this.txt_adults.setText("");
+            this.txt_children.setText("");
+            this.loadRoomTable(null);
         });
 
     }
@@ -308,8 +341,8 @@ public class PersonelView extends Layout {
 
     private void createUIComponents() throws ParseException {
         this.txt_season_strt_date = new JFormattedTextField(new MaskFormatter("##/##/####"));
-        this.txt_season_strt_date.setText("01/01/2024");
+        this.txt_season_strt_date.setText("01/01/2020");
         this.txt_season_fnsh_date = new JFormattedTextField(new MaskFormatter("##/##/####"));
-        this.txt_season_fnsh_date.setText("01/05/2024");
+        this.txt_season_fnsh_date.setText("01/05/2030");
     }
 }

@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class RoomDao {
@@ -30,6 +33,47 @@ public class RoomDao {
         }
         return roomList;
     }
+
+    public ArrayList<Room> searchForTable(String hotelName, String cityName, String startDate, String endDate) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        ArrayList<Room> roomList = new ArrayList<>();
+        try {
+
+            LocalDate parsedStartDate = (startDate != null && !startDate.isEmpty()) ? LocalDate.parse(startDate, formatter) : null;
+            LocalDate parsedEndDate = (endDate != null && !endDate.isEmpty()) ? LocalDate.parse(endDate, formatter) : null;
+
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM public.room AS r ")
+                    .append("LEFT JOIN public.hotel AS h ON r.hotel_id = h.hotel_id ")
+                    .append("LEFT JOIN public.pension AS p ON r.pension_id = p.pension_id ")
+                    .append("LEFT JOIN public.season AS s ON r.season_id = s.season_id WHERE 1=1");
+
+            if (hotelName != null && !hotelName.isEmpty()) {
+                queryBuilder.append(" AND h.hotel_name = '").append(hotelName).append("'");
+            }
+            if (cityName != null && !cityName.isEmpty()) {
+                queryBuilder.append(" AND h.hotel_address = '").append(cityName).append("'");
+            }
+            if (parsedStartDate != null) {
+                queryBuilder.append(" AND s.start_date >= '").append(parsedStartDate.toString()).append("'");
+            }
+            if (parsedEndDate != null) {
+                queryBuilder.append(" AND s.end_date <= '").append(parsedEndDate.toString()).append("'");
+            }
+
+            String query = queryBuilder.toString();
+            ResultSet rs = this.connection.createStatement().executeQuery(query);
+            while (rs.next()) {
+                roomList.add(this.match(rs));
+            }
+        } catch (SQLException | DateTimeParseException e) {
+            e.printStackTrace();
+        }
+
+        return roomList;
+    }
+
 
     public ArrayList<Room> getRoomByOtelId(int id) {
         ArrayList<Room> rooms = new ArrayList<>();
