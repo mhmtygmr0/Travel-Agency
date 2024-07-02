@@ -16,16 +16,17 @@ public class RoomDao {
     private final Connection connection;
 
     public RoomDao() {
+        // Veritabanı bağlantısını alır
         this.connection = Db.getInstance();
     }
 
+    // Tüm odaları listeler (stok sayısı 0'dan büyük olanlar)
     public ArrayList<Room> findAll() {
         ArrayList<Room> roomList = new ArrayList<>();
         String sql = "SELECT * FROM public.room WHERE stock > 0 ORDER BY room_id";
         try {
             ResultSet rs = this.connection.createStatement().executeQuery(sql);
             while (rs.next()) {
-
                 roomList.add(this.match(rs));
             }
         } catch (SQLException e) {
@@ -34,13 +35,12 @@ public class RoomDao {
         return roomList;
     }
 
+    // Otel adı, şehir adı, başlangıç ve bitiş tarihlerine göre odaları arar
     public ArrayList<Room> searchForTable(String hotelName, String cityName, String startDate, String endDate) {
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         ArrayList<Room> roomList = new ArrayList<>();
         try {
-
             LocalDate parsedStartDate = (startDate != null && !startDate.isEmpty()) ? LocalDate.parse(startDate, formatter) : null;
             LocalDate parsedEndDate = (endDate != null && !endDate.isEmpty()) ? LocalDate.parse(endDate, formatter) : null;
 
@@ -76,7 +76,7 @@ public class RoomDao {
         return roomList;
     }
 
-
+    // Bir otel için odaları listeler
     public ArrayList<Room> getRoomByOtelId(int id) {
         ArrayList<Room> rooms = new ArrayList<>();
         String query = "SELECT * FROM public.room WHERE hotel_id = ?";
@@ -96,6 +96,7 @@ public class RoomDao {
         return rooms;
     }
 
+    // Belirli bir ID'ye sahip odayı getirir
     public Room getByID(int id) {
         Room obj = null;
         String query = "SELECT * FROM public.room WHERE room_id = ? ";
@@ -112,6 +113,7 @@ public class RoomDao {
         return obj;
     }
 
+    // ResultSet'ten alınan verilerle yeni bir Oda nesnesi oluşturur
     public Room match(ResultSet rs) throws SQLException {
         Room obj = new Room();
         obj.setRoom_id(rs.getInt("room_id"));
@@ -133,6 +135,7 @@ public class RoomDao {
         return obj;
     }
 
+    // Yeni bir oda kaydeder
     public boolean save(Room room) {
         String query = "INSERT INTO public.room" +
                 "(" +
@@ -177,7 +180,7 @@ public class RoomDao {
         return true;
     }
 
-
+    // Oda stokunu günceller
     public boolean updateStock(Room room) {
         String query = "UPDATE public.room SET stock = ? WHERE room_id = ? ";
         try {
@@ -192,7 +195,7 @@ public class RoomDao {
         return true;
     }
 
-
+    // Bir odayı siler
     public boolean delete(int room_id) {
         try {
             String query = "DELETE FROM public.room WHERE room_id = ?";
@@ -205,6 +208,7 @@ public class RoomDao {
         return true;
     }
 
+    // Bir odayı günceller
     public boolean update(Room room) {
         try {
             String query = "UPDATE public.room SET " +

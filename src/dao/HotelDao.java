@@ -12,16 +12,18 @@ import java.util.ArrayList;
 public class HotelDao {
     private final Connection connection;
 
+    // Veritabanı bağlantısını alır
     public HotelDao() {
         this.connection = Db.getInstance();
     }
 
+    // Tüm otelleri ID'ye göre sıralı olarak getirir
     public ArrayList<Hotel> findAll() {
         ArrayList<Hotel> hotelList = new ArrayList<>();
-        String quary = "SELECT * FROM public.hotel ORDER BY hotel_id";
+        String query = "SELECT * FROM public.hotel ORDER BY hotel_id";
 
         try {
-            ResultSet rs = this.connection.createStatement().executeQuery(quary);
+            ResultSet rs = this.connection.createStatement().executeQuery(query);
             while (rs.next()) {
                 hotelList.add(this.match(rs));
             }
@@ -31,7 +33,7 @@ public class HotelDao {
         return hotelList;
     }
 
-    // Belirli bir ID'ye sahip oteli getiren metot
+    // Belirli bir ID'ye sahip oteli getirir
     public Hotel getByID(int id) {
         Hotel obj = null;
         String query = "SELECT * FROM public.hotel WHERE hotel_id = ? ";
@@ -48,7 +50,7 @@ public class HotelDao {
         return obj;
     }
 
-    // Otel ekleyen metot
+    // Yeni bir otel ekler
     public boolean save(Hotel hotel) {
         String query = "INSERT INTO public.hotel " +
                 "(hotel_name, hotel_address, hotel_email, hotel_phone, hotel_star, car_park, wifi, pool, fitness, concierge, spa, room_service) " +
@@ -74,7 +76,7 @@ public class HotelDao {
         return false;
     }
 
-    // Otel silen metot
+    // Belirli bir oteli siler
     public boolean delete(int id) {
         String query = "DELETE FROM public.hotel WHERE hotel_id = ?";
         try (PreparedStatement pr = connection.prepareStatement(query)) {
@@ -86,7 +88,7 @@ public class HotelDao {
         return false;
     }
 
-    // Otel güncelleyen metot
+    // Bir oteli günceller
     public boolean update(Hotel hotel) {
         try {
             String query = "UPDATE public.hotel SET " +
@@ -114,6 +116,7 @@ public class HotelDao {
         return false;
     }
 
+    // ResultSet'ten alınan verilerle yeni bir Hotel nesnesi oluşturur
     public Hotel match(ResultSet rs) throws SQLException {
         Hotel hotel = new Hotel();
         hotel.setHotel_id(rs.getInt("hotel_id"));

@@ -11,10 +11,12 @@ public class ReservationDao {
 
     private final Connection connection;
 
+    // Veritabanı bağlantısını alır
     public ReservationDao() {
         this.connection = Db.getInstance();
     }
 
+    // Belirli bir rezervasyon ID'sine sahip rezervasyonu getirir
     public Reservation getByID(int reservation_id) {
         Reservation obj = null;
         String query = "SELECT * FROM public.reservation WHERE reservation_id = ?";
@@ -32,6 +34,7 @@ public class ReservationDao {
         return obj;
     }
 
+    // ResultSet'ten alınan verilerle yeni bir Rezervasyon nesnesi oluşturur
     public Reservation match(ResultSet rs) throws SQLException {
         Reservation obj = new Reservation();
         obj.setReservation_id(rs.getInt("reservation_id"));
@@ -47,6 +50,7 @@ public class ReservationDao {
         return obj;
     }
 
+    // Tüm rezervasyonları listeler
     public ArrayList<Reservation> findAll() {
         ArrayList<Reservation> resList = new ArrayList<>();
         String sql = "SELECT * FROM public.reservation";
@@ -61,6 +65,7 @@ public class ReservationDao {
         return resList;
     }
 
+    // Yeni bir rezervasyon kaydeder
     public boolean save(Reservation reservation) {
         String query = "INSERT INTO public.reservation" +
                 "(" +
@@ -93,6 +98,7 @@ public class ReservationDao {
         return false;
     }
 
+    // Belirli bir rezervasyon ID'sine sahip rezervasyonu siler
     public boolean delete(int reservation_id) {
         String query = "DELETE FROM public.reservation WHERE reservation_id = ?";
         try (PreparedStatement pr = connection.prepareStatement(query)) {
@@ -104,10 +110,12 @@ public class ReservationDao {
         return false;
     }
 
+    // Belirli bir rezervasyon ID'sine sahip rezervasyonları getirir
     public ArrayList<Reservation> getByListReservationId(int id) {
         return this.selectByQuery("SELECT * FROM public.reservation WHERE reservation_id=" + id);
     }
 
+    // Verilen sorguya göre rezervasyonları getirir
     public ArrayList<Reservation> selectByQuery(String query) {
         ArrayList<Reservation> resList = new ArrayList<>();
         try (Statement st = this.connection.createStatement();
@@ -121,6 +129,7 @@ public class ReservationDao {
         return resList;
     }
 
+    // Bir rezervasyonu günceller
     public boolean update(Reservation reservation) {
         String query = "UPDATE public.reservation SET " +
                 "room_id = ?," +

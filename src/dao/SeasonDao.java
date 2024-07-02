@@ -11,9 +11,11 @@ public class SeasonDao {
     private final Connection connection;
 
     public SeasonDao() {
+        // Veritabanı bağlantısını alır
         this.connection = Db.getInstance();
     }
 
+    // Tüm mevsimleri listeler
     public ArrayList<Season> findAll() {
         ArrayList<Season> seasonList = new ArrayList<>();
         String sql = "SELECT * FROM public.season ORDER BY season_id";
@@ -28,6 +30,7 @@ public class SeasonDao {
         return seasonList;
     }
 
+    // Bir otel için mevsimleri listeler
     public ArrayList<Season> getSeasonsByOtelId(int otelId) {
         ArrayList<Season> seasons = new ArrayList<>();
         String query = "SELECT * FROM public.season WHERE hotel_id = ?";
@@ -47,6 +50,7 @@ public class SeasonDao {
         return seasons;
     }
 
+    // Belirli bir ID'ye sahip mevsimi getirir
     public Season getByID(int id) {
         Season obj = null;
         String query = "SELECT * FROM public.season WHERE season_id = ? ";
@@ -63,6 +67,7 @@ public class SeasonDao {
         return obj;
     }
 
+    // Yeni bir mevsim kaydeder
     public boolean save(Season season) {
         String query = "INSERT INTO public.season" +
                 "(" +
@@ -85,6 +90,7 @@ public class SeasonDao {
         return true;
     }
 
+    // Bir mevsimi siler
     public boolean delete(int hotel_id) {
         try {
             String query = "DELETE FROM public.season WHERE season_id = ?";
@@ -97,8 +103,8 @@ public class SeasonDao {
         return true;
     }
 
+    // Belirli bir ID'ye sahip mevsimin fiyat parametresini döndürür
     public double returnPriceParameter(int id) {
-
         double priceParameter = 0.0;
         String query = "SELECT price_parameter FROM public.season WHERE season_id=?";
 
@@ -117,6 +123,7 @@ public class SeasonDao {
         return priceParameter;
     }
 
+    // ResultSet'ten alınan verilerle yeni bir Mevsim nesnesi oluşturur
     public Season match(ResultSet rs) throws SQLException {
         Season season = new Season();
         season.setSeason_id(rs.getInt("season_id"));
