@@ -15,25 +15,6 @@ public class ReservationDao {
         this.connection = Db.getInstance();
     }
 
-    public ArrayList<Reservation> getReservationByHotelId(int hotelId) {
-        ArrayList<Reservation> reservations = new ArrayList<>();
-        String query = "SELECT * FROM public.reservation WHERE room_id = ?";
-
-        try (PreparedStatement pr = connection.prepareStatement(query)) {
-            pr.setInt(1, hotelId);
-            try (ResultSet rs = pr.executeQuery()) {
-                while (rs.next()) {
-                    Reservation reservation = match(rs);
-                    reservations.add(reservation);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return reservations;
-    }
-
     public Reservation getByID(int reservation_id) {
         Reservation obj = null;
         String query = "SELECT * FROM public.reservation WHERE reservation_id = ?";

@@ -23,16 +23,6 @@ public class ReservationManager {
     }
 
     /**
-     * Belirli bir otel ID'sine göre rezervasyon listesini getirir.
-     *
-     * @param id Otel ID'si
-     * @return Belirtilen otel ID'sine sahip rezervasyonların listesi
-     */
-    public ArrayList<Reservation> getReservationByHotelId(int id) {
-        return this.reservationDao.getReservationByHotelId(id);
-    }
-
-    /**
      * Tüm rezervasyonları getirir.
      *
      * @return Tüm rezervasyonların listesi
