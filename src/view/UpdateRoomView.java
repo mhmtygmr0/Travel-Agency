@@ -79,12 +79,12 @@ public class UpdateRoomView extends Layout {
             this.btn_tv.setSelected(true);
         }
 
-        ArrayList<Pension> pensions = this.pensionManager.getPensionByOtelId(currentRoom.getHotel_id());
+        ArrayList<Pension> pensions = this.pensionManager.getPensionByHotelId(currentRoom.getHotel_id());
         for (Pension pension : pensions) {
             this.cmb_pension.addItem(pension.getComboItem());
         }
 
-        ArrayList<Season> seasons = this.seasonManager.getSeasonsByOtelId(currentRoom.getHotel_id());
+        ArrayList<Season> seasons = this.seasonManager.getSeasonsByHotelId(currentRoom.getHotel_id());
         for (Season season : seasons) {
             this.cmb_season.addItem(season.getComboItem());
         }
@@ -96,7 +96,7 @@ public class UpdateRoomView extends Layout {
 
 
         this.cmb_hotel.setSelectedItem(currentRoom.getHotel().getHotel_name());
-        this.cmb_pension.setSelectedItem(this.pensionManager.getPensionByOtelId(currentRoom.getHotel_id()));
+        this.cmb_pension.setSelectedItem(this.pensionManager.getPensionByHotelId(currentRoom.getHotel_id()));
         this.cmb_season.setSelectedItem(this.seasonManager.getById(currentRoom.getSeason_id()));
         this.cmb_type.setSelectedItem(currentRoom.getRoom_type());
         this.txt_stock.setText(String.valueOf(currentRoom.getStock()));

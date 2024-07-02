@@ -45,7 +45,7 @@ public class AdminView extends Layout {
         this.loadEmployeeFilters();
     }
 
-    public void loadComponent(){
+    public void loadComponent() {
         // login ekranına dönmek için butonumuza görev veriyoruz
         btn_logout.addActionListener(e -> {
             dispose();

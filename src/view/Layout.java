@@ -15,7 +15,7 @@ public class Layout extends JFrame {
      * @param width  pencerenin genişliği
      * @param height pencerenin yüksekliği
      */
-    public void guiInitilize(int width, int height){
+    public void guiInitilize(int width, int height) {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setTitle("Travel Agency");
         this.setSize(width, height);
@@ -68,7 +68,7 @@ public class Layout extends JFrame {
      *
      * @param table tablo nesnesi
      */
-    public void tableRowSelect(JTable table){
+    public void tableRowSelect(JTable table) {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

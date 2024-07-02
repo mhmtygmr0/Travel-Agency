@@ -37,7 +37,7 @@ public class PensionManager {
      * @param id Otel ID'si
      * @return Belirtilen otel ID'sine sahip pansiyonların listesi
      */
-    public ArrayList<Pension> getPensionByOtelId(int id) {
+    public ArrayList<Pension> getPensionByHotelId(int id) {
         return this.pensionDao.getPensionByOtelId(id);
     }
 

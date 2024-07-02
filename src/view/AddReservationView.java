@@ -54,32 +54,39 @@ public class AddReservationView extends Layout {
     private String start_date;
     private String end_date;
 
+    // Constructor
     public AddReservationView(Room room, String star_date, String end_date, int adult_count, int child_count, Reservation reservation) {
-        this.add(container);
-        this.guiInitilize(800, 650);
+        this.add(container); // Ana container'ı ekler
+        this.guiInitilize(800, 650); // Arayüzü boyutlandırır ve başlatır
 
+        // Yönetici sınıflarını başlatır
         this.reservationManager = new ReservationManager();
         this.seasonManager = new SeasonManager();
         this.roomManager = new RoomManager();
 
+        // Parametreleri atar
         this.room = room;
         this.start_date = star_date;
         this.end_date = end_date;
 
-        if (this.reservation == null) ;
-        {
+        // Rezervasyon varsa oluşturur
+        if (this.reservation == null) {
             this.reservation = new Reservation();
-            this.roomManager = new RoomManager();
-
         }
+
+        // Misafir sayısını hesaplar
         double guest_count = adult_count + child_count;
+
+        // Tarih formatını ve gün sayısını hesaplar
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate checkindate = LocalDate.parse(star_date, formatter);
         LocalDate checkoutdate = LocalDate.parse(end_date, formatter);
         long day_count = ChronoUnit.DAYS.between(checkindate, checkoutdate);
 
+        // Toplam fiyatı hesaplar
         double total_price = ((this.room.getAdult_price() * adult_count) + this.room.getChild_price() * child_count) * day_count * this.seasonManager.returnPriceParameter(this.room.getSeason_id());
 
+        // Alanları doldurur
         this.txt_hotel_name.setText(this.room.getHotel().getHotel_name());
         this.txt_hotel_adress.setText(this.room.getHotel().getHotel_address());
         this.txt_hotel_star.setText(this.room.getHotel().getHotel_star());
@@ -103,6 +110,7 @@ public class AddReservationView extends Layout {
         this.rb_projection.setSelected(this.room.isProjection());
         this.rb_minibar.setSelected(this.room.isMinibar());
 
+        // Rezervasyon varsa misafir bilgilerini doldurur
         if (reservation != null) {
             this.reservation.setGuest_citizen_id(this.txt_guest_id.getText());
             this.reservation.setGuest_name(this.txt_guest_name.getText());
@@ -110,14 +118,15 @@ public class AddReservationView extends Layout {
             this.reservation.setGuest_phone(this.txt_guest_phone.getText());
         }
 
+        // Kaydet butonunun tıklanma olayı
         this.btn_save.addActionListener(e -> {
             JTextField[] checkfieldEmpty = {this.txt_guest_name, this.txt_guest_id, this.txt_guest_email, this.txt_guest_phone};
             if (Helper.isFieldListEmpty(checkfieldEmpty)) {
-                Helper.showMsg("fill");
+                Helper.showMsg("fill"); // Boş alan uyarısı gösterir
             } else {
                 boolean result;
 
-                // Rezervasyon bilgilerini atama
+                // Rezervasyon bilgilerini atar
                 this.reservation.setTotal_price(Double.parseDouble(this.txt_guest_total_price.getText()));
                 this.reservation.setGuest_count((int) Double.parseDouble(this.txt_total_people.getText()));
                 this.reservation.setGuest_name(this.txt_guest_name.getText());
@@ -128,16 +137,15 @@ public class AddReservationView extends Layout {
                 this.reservation.setCheck_in_date(LocalDate.parse(this.start_date, formatter));
                 this.reservation.setCheck_out_date(LocalDate.parse(this.end_date, formatter));
 
-                result = this.reservationManager.save(this.reservation);
+                result = this.reservationManager.save(this.reservation); // Rezervasyonu kaydeder
                 if (result) {
-                    Helper.showMsg("done");
-                    this.roomManager.getById(this.room.setStock(this.room.getStock() - 1));
-                    this.roomManager.updateStock(this.room);
-                    dispose();
+                    Helper.showMsg("done"); // Başarılı mesaj gösterir
+                    this.roomManager.getById(this.room.setStock(this.room.getStock() - 1)); // Oda stokunu günceller
+                    this.roomManager.updateStock(this.room); // Oda stokunu veritabanında günceller
+                    dispose(); // Pencereyi kapatır
                 } else {
-                    Helper.showMsg("error");
+                    Helper.showMsg("error"); // Hata mesajı gösterir
                 }
-
             }
         });
     }

@@ -73,11 +73,18 @@ public class PersonelView extends Layout {
     private RoomManager roomManager;
     private ReservationManager reservationManager;
     private int selectedHotelID;
-    private int selectedRoomID;
 
+    /**
+     * PersonelView sınıfı için parametresiz kurucu metod.
+     */
     public PersonelView() {
     }
 
+    /**
+     * PersonelView sınıfı için parametreli kurucu metod.
+     *
+     * @param user Kullanıcı nesnesi
+     */
     public PersonelView(User user) {
         this.user = user;
         this.hotelManager = new HotelManager();
@@ -89,27 +96,68 @@ public class PersonelView extends Layout {
         this.guiInitilize(1500, 750);
         this.lbl_welcome.setText("Welcome : " + this.user.getFirst_name() + " " + this.user.getLast_name());
 
+        // Arayüz bileşenlerini yükle
         this.loadComponent();
 
+        // Otel tablosunu yükle
         this.loadHotelTable();
         this.loadHotelComponent();
 
+        // Sezon tablosunu yükle
         this.loadSeasonTable();
         this.loadSeasonComponent();
 
+        // Pansiyon tablosunu yükle
         this.loadPensionTable();
         this.loadPensionComponent();
 
+        // Oda tablosunu yükle
         this.loadRoomTable(null);
         this.loadRoomComponent();
         this.loadRoomFilter();
 
+        // Rezervasyon tablolarını yükle
         this.loadReservationRoomTable(null);
         this.loadReservationTable(null);
         this.loadReservationTableComponent();
 
     }
 
+
+    /**
+     * Arayüz bileşenlerini yükler
+     */
+    public void loadComponent() {
+
+        // Otelleri ve şehirleri yükle
+        for (Hotel hotel : this.hotelManager.findAll()) {
+            this.cmb_hotel_name.addItem(hotel.getComboItem());
+            this.cmb_hotel_city.addItem(hotel.getHotel_address());
+        }
+        this.cmb_hotel_name.setSelectedIndex(-1);
+        this.cmb_hotel_city.setSelectedIndex(-1);
+
+        // Çıkış yap butonu
+        this.btn_logout.addActionListener(e -> {
+            dispose();
+            LoginView loginView = new LoginView();
+            loadHotelTable();
+        });
+
+        // Oda filtre sıfırlama butonu
+        this.btn_room_reset.addActionListener(e -> {
+            this.cmb_hotel_name.setSelectedIndex(-1);
+            this.cmb_hotel_city.setSelectedIndex(-1);
+            this.txt_adults.setText("");
+            this.txt_children.setText("");
+            this.loadRoomTable(null);
+        });
+
+    }
+
+    /**
+     * Oda filtresini yükler
+     */
     public void loadRoomFilter() {
         this.btn_room_search.addActionListener(e -> {
 
@@ -120,6 +168,7 @@ public class PersonelView extends Layout {
             String startDate = txt_season_strt_date.getText();
             String endDate = txt_season_fnsh_date.getText();
 
+            // Oda listesini ara
             ArrayList<Room> rooms = this.roomManager.searchForTable(
                     hotelName,
                     cityName,
@@ -133,50 +182,38 @@ public class PersonelView extends Layout {
         });
     }
 
-
-    public void loadComponent() {
-
-        for (Hotel hotel : this.hotelManager.findAll()) {
-            this.cmb_hotel_name.addItem(hotel.getComboItem());
-            this.cmb_hotel_city.addItem(hotel.getHotel_address());
-        }
-        this.cmb_hotel_name.setSelectedIndex(-1);
-        this.cmb_hotel_city.setSelectedIndex(-1);
-
-        this.btn_logout.addActionListener(e -> {
-            dispose();
-            LoginView loginView = new LoginView();
-            loadHotelTable();
-        });
-
-        this.btn_room_reset.addActionListener(e -> {
-            this.cmb_hotel_name.setSelectedIndex(-1);
-            this.cmb_hotel_city.setSelectedIndex(-1);
-            this.txt_adults.setText("");
-            this.txt_children.setText("");
-            this.loadRoomTable(null);
-        });
-
-    }
-
+    /**
+     * Otel tablosunu yükler
+     */
     public void loadHotelTable() {
         Object[] col_hotel = {"ID", "Name", "Adress", "Mail", "Telefon", "Star", "Car Park", "Wifi", "Pool", "Fitness", "Convention", "Spa", "Room Services"};
         ArrayList<Object[]> hotelList = this.hotelManager.getForTable(col_hotel.length, this.hotelManager.findAll());
         this.createTable(this.tmdl_hotel, this.tbl_hotel, col_hotel, hotelList);
     }
 
+    /**
+     * Sezon tablosunu yükler
+     */
     public void loadSeasonTable() {
         Object[] col_season = {"ID", "Hotel ID", "Start Date", "Finish Date", "Price Parameter"};
         ArrayList<Object[]> seasonList = this.seasonManager.getForTable(col_season.length, this.seasonManager.findAll());
         this.createTable(this.tmdl_season, tbl_season, col_season, seasonList);
     }
 
+    /**
+     * Pansiyon tablosunu yükler
+     */
     public void loadPensionTable() {
         Object[] col_pension = {"ID", "Hotel ID", "Pension Type"};
         ArrayList<Object[]> pensionList = this.pensionManager.getForTable(col_pension.length, this.pensionManager.findAll());
         this.createTable(this.tmdl_pension, this.tbl_pension, col_pension, pensionList);
     }
 
+    /**
+     * Oda tablosunu yükler
+     *
+     * @param roomList Oda listesi
+     */
     public void loadRoomTable(ArrayList<Object[]> roomList) {
         col_room = new Object[]{"ID", "Hotel ID", "Pension ID", "Season ID", "Type", "Stock", "Adult Price", "Child Price", "Bed Capacity", "Square Meter", "Television", "Minibar", "Game Console", "Cash BOX", "Projection", "GYM"};
         if (roomList == null) {
@@ -185,20 +222,33 @@ public class PersonelView extends Layout {
         this.createTable(this.tmdl_room, this.tbl_room, this.col_room, roomList);
     }
 
+    /**
+     * Rezervasyon tablosunu yükler
+     *
+     * @param reservation Rezervasyon nesnesi
+     */
     public void loadReservationTable(Reservation reservation) {
         Object[] col_res = {"ID", "Room ID", "Entry Date", "Finish Date", "Total Amount", "Guest Number", "Guest Name ", "Guest TC Id Number", "Mail", "Phone"};
         ArrayList<Object[]> resList = this.reservationManager.getForTable(col_res.length, this.reservationManager.findAll());
         createTable(this.tmdl_reservation, this.tbl_reservation, col_res, resList);
     }
 
+    /**
+     * Rezervasyonlu Oda tablosunu yükler
+     *
+     * @param roomList Oda listesi
+     */
     public void loadReservationRoomTable(ArrayList<Object[]> roomList) {
         col_res_room = new Object[]{"ID", "Hotel ID", "Pension ID", "Season ID", "Type", "Stock", "Adult Price", "Child Price", "Bed Capacity", "Square Meter", "Television", "Minibar", "Game Console", "Cash BOX", "Projection"};
         if (roomList == null) {
-            roomList = this.roomManager.getForTable(this.col_res_room.length, this.roomManager.getRoomByOtelId(selectedHotelID));
+            roomList = this.roomManager.getForTable(this.col_res_room.length, this.roomManager.getRoomByOtelId(this.selectedHotelID));
         }
         createTable(this.tmdl_room_reservation, this.tbl_reservation, this.col_res_room, roomList);
     }
 
+    /**
+     * Oteli yükler
+     */
     public void loadHotelComponent() {
         this.tableRowSelect(this.tbl_hotel);
 
@@ -240,6 +290,7 @@ public class PersonelView extends Layout {
                     loadPensionTable();
                     loadRoomTable(null);
                     loadSeasonTable();
+                    loadReservationTable(null);
                 } else {
                     Helper.showMsg("error");
                 }
@@ -249,6 +300,9 @@ public class PersonelView extends Layout {
         this.tbl_hotel.setComponentPopupMenu(hotel_menu);
     }
 
+    /**
+     * Sezonları yükler
+     */
     public void loadSeasonComponent() {
         this.tableRowSelect(this.tbl_season);
         this.season_menu = new JPopupMenu();
@@ -270,6 +324,7 @@ public class PersonelView extends Layout {
                     Helper.showMsg("done");
                     loadSeasonTable();
                     loadRoomTable(null);
+                    loadReservationTable(null);
 
                 } else {
                     Helper.showMsg("error");
@@ -280,6 +335,9 @@ public class PersonelView extends Layout {
         this.tbl_season.setComponentPopupMenu(this.season_menu);
     }
 
+    /**
+     * Pansiyon yükler
+     */
     public void loadPensionComponent() {
         this.tableRowSelect(tbl_pension);
 
@@ -302,6 +360,7 @@ public class PersonelView extends Layout {
                     Helper.showMsg("done");
                     loadPensionTable();
                     loadRoomTable(null);
+                    loadReservationTable(null);
 
                 } else {
                     Helper.showMsg("error");
@@ -312,6 +371,9 @@ public class PersonelView extends Layout {
         this.tbl_pension.setComponentPopupMenu(pension_menu);
     }
 
+    /**
+     * Oda yükler
+     */
     public void loadRoomComponent() {
         this.tableRowSelect(tbl_room);
         this.room_menu = new JPopupMenu();
@@ -362,6 +424,7 @@ public class PersonelView extends Layout {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         loadRoomTable(null);
+                        loadReservationTable(null);
                     }
                 });
             }
@@ -377,6 +440,7 @@ public class PersonelView extends Layout {
                     loadRoomTable(null);
                     loadHotelTable();
                     loadPensionTable();
+                    loadReservationTable(null);
                 } else {
                     Helper.showMsg("error");
                 }
@@ -386,6 +450,9 @@ public class PersonelView extends Layout {
         this.tbl_room.setComponentPopupMenu(this.room_menu);
     }
 
+    /**
+     * Rezervasyon yükler
+     */
     public void loadReservationTableComponent() {
         tableRowSelect(this.tbl_reservation);
         this.reservation_menu = new JPopupMenu();

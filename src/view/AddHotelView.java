@@ -25,14 +25,15 @@ public class AddHotelView extends Layout {
     private Hotel hotel;
     private HotelManager hotelManager;
 
-
+    // Yapıcı metod
     public AddHotelView() {
-        this.hotelManager = new HotelManager();
-        this.hotel = new Hotel();
-        this.add(container);
-        this.guiInitilize(500, 500);
-        this.cmbstarAdd();
+        this.hotelManager = new HotelManager();  // HotelManager sınıfı üzerinden işlemleri yönetir
+        this.hotel = new Hotel();  // Yeni bir Hotel nesnesi oluşturur
+        this.add(container);  // Arayüz bileşenlerini konteynere ekler
+        this.guiInitilize(500, 500);  // Arayüzün boyutunu ve diğer ayarlarını yapar
+        this.cmbstarAdd();  // Yıldız seçim ComboBox'ını doldurur
 
+        // Eğer mevcut bir otel varsa, bilgileri giriş alanlarına yerleştirir
         if (this.hotel.getHotel_id() != 0) {
             this.txt_hotel_name.setText(this.hotel.getHotel_name());
             this.txt_hotel_address.setText(this.hotel.getHotel_address());
@@ -40,15 +41,18 @@ public class AddHotelView extends Layout {
             this.txt_hotel_phone.setText(this.hotel.getHotel_phone());
             this.cmb_hotel_star.setSelectedItem(this.hotel.getHotel_star());
         }
-        btn_hotel_save.addActionListener(e -> {
 
+        // Kaydet butonuna tıklanınca yapılacak işlemler
+        btn_hotel_save.addActionListener(e -> {
             JTextField[] checkFieldList = {this.txt_hotel_name, this.txt_hotel_email, this.txt_hotel_phone, this.txt_hotel_address};
 
+            // Gerekli alanların boş olup olmadığını kontrol eder
             if (Helper.isFieldListEmpty(checkFieldList) || this.cmb_hotel_star.getSelectedIndex() == -1) {
-                Helper.showMsg("fill");
-
+                Helper.showMsg("fill");  // Yardımcı metinle uygun bir mesaj gösterir
             } else {
                 boolean result = true;
+
+                // Otel nesnesine kullanıcının girdiği bilgileri atar
                 this.hotel.setHotel_name(this.txt_hotel_name.getText());
                 this.hotel.setHotel_address(this.txt_hotel_address.getText());
                 this.hotel.setHotel_email(this.txt_hotel_email.getText());
@@ -61,22 +65,23 @@ public class AddHotelView extends Layout {
                 this.hotel.setHotel_concierge(this.btn_concierge.isSelected());
                 this.hotel.setHotel_spa(this.btn_spa.isSelected());
                 this.hotel.setHotel_room_service(this.btn_room_service.isSelected());
+
+                // HotelManager üzerinden oteli kaydeder
                 result = this.hotelManager.save(hotel);
                 if (result) {
-                    Helper.showMsg("done");
-
-                    dispose();
-
+                    Helper.showMsg("done");  // Başarılı mesajını gösterir
+                    dispose();  // Pencereyi kapatır
                 } else {
-                    Helper.showMsg("error");
+                    Helper.showMsg("error");  // Hata mesajını gösterir
                 }
             }
         });
     }
 
+    // Yıldız seçim ComboBox'ını dolduran metod
     public void cmbstarAdd() {
         String[] stars = {"*", "**", "***", "****", "*****"};
         this.cmb_hotel_star.setModel(new DefaultComboBoxModel<>(stars));
-        this.cmb_hotel_star.setSelectedIndex(-1);
+        this.cmb_hotel_star.setSelectedIndex(-1);  // Varsayılan olarak seçili olacak öğeyi belirler
     }
 }

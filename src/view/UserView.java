@@ -24,6 +24,7 @@ public class UserView extends Layout {
 
     /**
      * UserView sınıfının yapıcı metodu.
+     *
      * @param user Kullanıcı nesnesi (varsa düzenleme, yoksa yeni kullanıcı ekleme)
      */
     public UserView(User user) {

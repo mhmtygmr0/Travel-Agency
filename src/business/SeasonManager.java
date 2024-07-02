@@ -28,7 +28,7 @@ public class SeasonManager {
      * @param id Otel ID'si
      * @return Belirtilen otel ID'sine sahip mevsimlerin listesi
      */
-    public ArrayList<Season> getSeasonsByOtelId(int id) {
+    public ArrayList<Season> getSeasonsByHotelId(int id) {
         return this.seasonDao.getSeasonsByOtelId(id);
     }
 
