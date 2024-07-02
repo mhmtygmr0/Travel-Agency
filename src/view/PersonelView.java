@@ -104,10 +104,9 @@ public class PersonelView extends Layout {
         this.loadRoomComponent();
         this.loadRoomFilter();
 
-
+        this.loadReservationRoomTable(null);
         this.loadReservationTable(null);
         this.loadReservationTableComponent();
-        this.loadReservationRoomTable(null);
 
     }
 

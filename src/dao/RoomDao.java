@@ -62,6 +62,8 @@ public class RoomDao {
                 queryBuilder.append(" AND s.end_date <= '").append(parsedEndDate.toString()).append("'");
             }
 
+            queryBuilder.append(" AND stock > 0 ORDER BY room_id");
+
             String query = queryBuilder.toString();
             ResultSet rs = this.connection.createStatement().executeQuery(query);
             while (rs.next()) {
@@ -157,10 +159,10 @@ public class RoomDao {
             pr.setInt(2, room.getPension_id());
             pr.setInt(3, room.getSeason_id());
             pr.setString(4, room.getRoom_type().toString());
-            pr.setInt(5, room.getStock());
+            pr.setInt(5, room.getBed_capacity());
             pr.setDouble(6, room.getAdult_price());
             pr.setDouble(7, room.getChild_price());
-            pr.setInt(8, room.getBed_capacity());
+            pr.setInt(8, room.getStock());
             pr.setInt(9, room.getSquare_meter());
             pr.setBoolean(10, room.isTelevision());
             pr.setBoolean(11, room.isMinibar());
@@ -228,10 +230,10 @@ public class RoomDao {
             pr.setInt(2, room.getPension_id());
             pr.setInt(3, room.getSeason_id());
             pr.setString(4, room.getRoom_type().toString());
-            pr.setInt(5, room.getStock());
+            pr.setInt(5, room.getBed_capacity());
             pr.setDouble(6, room.getAdult_price());
             pr.setDouble(7, room.getChild_price());
-            pr.setInt(8, room.getBed_capacity());
+            pr.setInt(8, room.getStock());
             pr.setInt(9, room.getSquare_meter());
             pr.setBoolean(10, room.isTelevision());
             pr.setBoolean(11, room.isMinibar());
