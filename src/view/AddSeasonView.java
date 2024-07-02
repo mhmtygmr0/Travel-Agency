@@ -34,24 +34,23 @@ public class AddSeasonView extends Layout {
         this.cmb_hotel.getSelectedItem();
         this.add(container);
         this.guiInitilize(300, 400);
-
-
-        for (Hotel hotel : this.hotelManager.findAll()) {
-            this.cmb_hotel.addItem(hotel.getComboItem());
-        }
+        this.cmbAddHotel();
 
         this.btn_save.addActionListener(e -> {
-            boolean result = false;
-            ComboItem selectSeason = (ComboItem) this.cmb_hotel.getSelectedItem();
-            this.season.setHotel_id(selectSeason.getKey());
-            this.season.setSeason_type(this.cmb_hotel.getSelectedItem().toString());
-            this.season.setPrice_parameter(Double.parseDouble(this.txt_price_parameter.getText()));
+
             JFormattedTextField[] checkDateList = {this.txt_start_date, this.txt_end_date, this.txt_price_parameter};
 
-            if (Helper.isFieldListEmpty(checkDateList)) {
+            if (Helper.isFieldListEmpty(checkDateList) || this.cmb_hotel.getSelectedIndex() == -1) {
                 Helper.showMsg("fill");
-                return;
+
             } else {
+                boolean result = false;
+                ComboItem selectSeason = (ComboItem) this.cmb_hotel.getSelectedItem();
+                this.season.setHotel_id(selectSeason.getKey());
+                this.season.setSeason_type(this.cmb_hotel.getSelectedItem().toString());
+                this.season.setPrice_parameter(Double.parseDouble(this.txt_price_parameter.getText()));
+
+
                 try {
 
                     this.season.setStart_date(LocalDate.parse(this.txt_start_date.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -63,17 +62,25 @@ public class AddSeasonView extends Layout {
                     Helper.showMsg("Date Format is Wrong !");
                     return;
                 }
-            }
-            if (result) {
-                Helper.showMsg("done");
 
-                dispose();
-            } else {
-                Helper.showMsg("error");
+                if (result) {
+                    dispose();
+                    Helper.showMsg("done");
+                } else {
+                    Helper.showMsg("error");
+                }
             }
         });
+
+
     }
 
+    private void cmbAddHotel(){
+        for (Hotel hotel : this.hotelManager.findAll()) {
+            this.cmb_hotel.addItem(hotel.getComboItem());
+        }
+        this.cmb_hotel.setSelectedIndex(-1);
+    }
 
     private void createUIComponents() throws ParseException {
         this.txt_start_date = new JFormattedTextField(new MaskFormatter("##/##/####"));
@@ -81,6 +88,5 @@ public class AddSeasonView extends Layout {
         this.txt_end_date = new JFormattedTextField(new MaskFormatter("##/##/####"));
         this.txt_end_date.setText("01/12/2024");
     }
-
 
 }

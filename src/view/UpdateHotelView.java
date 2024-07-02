@@ -52,13 +52,27 @@ public class UpdateHotelView extends Layout {
 
         //Açılan ekrandaki butonların, düzenlenen oteldeki verilerle eşleştirilmesi
 
-        if(currentHotel.isHotel_car_park()){btn_car_park.setSelected(true);}
-        if(currentHotel.isHotel_wifi()){btn_wifi.setSelected(true);}
-        if(currentHotel.isHotel_pool()){btn_swimming.setSelected(true);}
-        if(currentHotel.isHotel_fitness()){btn_fitness.setSelected(true);}
-        if(currentHotel.isHotel_concierge()){btn_concierge.setSelected(true);}
-        if(currentHotel.isHotel_spa()){btn_spa.setSelected(true);}
-        if(currentHotel.isHotel_room_service()){btn_room_service.setSelected(true);}
+        if (currentHotel.isHotel_car_park()) {
+            btn_car_park.setSelected(true);
+        }
+        if (currentHotel.isHotel_wifi()) {
+            btn_wifi.setSelected(true);
+        }
+        if (currentHotel.isHotel_pool()) {
+            btn_swimming.setSelected(true);
+        }
+        if (currentHotel.isHotel_fitness()) {
+            btn_fitness.setSelected(true);
+        }
+        if (currentHotel.isHotel_concierge()) {
+            btn_concierge.setSelected(true);
+        }
+        if (currentHotel.isHotel_spa()) {
+            btn_spa.setSelected(true);
+        }
+        if (currentHotel.isHotel_room_service()) {
+            btn_room_service.setSelected(true);
+        }
 
         this.txt_hotel_name.setText(currentHotel.getHotel_name());
         this.txt_hotel_address.setText(currentHotel.getHotel_address());
@@ -76,8 +90,8 @@ public class UpdateHotelView extends Layout {
             if (Helper.isFieldListEmpty(selectedHotelList) || this.cmb_hotel_star.getSelectedIndex() == -1) {
                 Helper.showMsg("fill");
                 return;
+            } else {
             }
-            else {}
 
             boolean result;
 
@@ -98,11 +112,10 @@ public class UpdateHotelView extends Layout {
 
             result = this.hotelManager.update(this.hotel);
 
-            if (result){
+            if (result) {
                 Helper.showMsg("done");
                 dispose();
-            }
-            else {
+            } else {
                 Helper.showMsg("error");
             }
         });

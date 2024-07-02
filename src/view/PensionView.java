@@ -21,7 +21,7 @@ public class PensionView extends Layout {
     private Hotel hotel;
     private User user;
 
-    public PensionView(int hotel_id) {
+    public PensionView() {
         this.hotel = new Hotel();
         this.hotelManager = new HotelManager();
         this.pensionManager = new PensionManager();
@@ -47,8 +47,8 @@ public class PensionView extends Layout {
                     result = this.pensionManager.save(this.pension);
                 }
                 if (result) {
-                    Helper.showMsg("done");
                     dispose();
+                    Helper.showMsg("done");
                 } else {
                     Helper.showMsg("error");
                 }

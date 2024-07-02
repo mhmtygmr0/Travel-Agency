@@ -18,7 +18,7 @@ public class PensionDao {
 
     public ArrayList<Pension> findAll() {
         ArrayList<Pension> pensionList = new ArrayList<>();
-        String sql = "SELECT * FROM public.pension";
+        String sql = "SELECT * FROM public.pension ORDER BY pension_id";
         try {
             ResultSet rs = this.connection.createStatement().executeQuery(sql);
             while (rs.next()) {

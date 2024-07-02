@@ -18,7 +18,7 @@ public class HotelDao {
 
     public ArrayList<Hotel> findAll() {
         ArrayList<Hotel> hotelList = new ArrayList<>();
-        String quary = "SELECT * FROM public.hotel";
+        String quary = "SELECT * FROM public.hotel ORDER BY hotel_id";
 
         try {
             ResultSet rs = this.connection.createStatement().executeQuery(quary);
@@ -76,13 +76,12 @@ public class HotelDao {
 
     // Otel silen metot
     public boolean delete(int id) {
-        try {
-            String query = "DELETE FROM public.hotel WHERE hotel_id = ?";
-            PreparedStatement pr = connection.prepareStatement(query);
+        String query = "DELETE FROM public.hotel WHERE hotel_id = ?";
+        try (PreparedStatement pr = connection.prepareStatement(query)) {
             pr.setInt(1, id);
             return pr.executeUpdate() != -1;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }

@@ -1,5 +1,8 @@
 package entity;
 
+import business.HotelManager;
+import business.PensionManager;
+
 public class Room {
     private int room_id;
     private int hotel_id;
@@ -44,7 +47,7 @@ public class Room {
         this.gym = gym;
     }
 
-    public Room(){
+    public Room() {
 
     }
 
@@ -196,5 +199,15 @@ public class Room {
                 ", projection=" + projection +
                 ", gym=" + gym +
                 '}';
+    }
+
+    public Hotel getHotel() {
+        HotelManager hotelManager = new HotelManager();
+        return hotelManager.getById(hotel_id);
+    }
+
+    public Pension getPension() {
+        PensionManager pensionManager = new PensionManager();
+        return pensionManager.getById(this.pension_id);
     }
 }

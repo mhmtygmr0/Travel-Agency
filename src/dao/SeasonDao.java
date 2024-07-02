@@ -16,7 +16,7 @@ public class SeasonDao {
 
     public ArrayList<Season> findAll() {
         ArrayList<Season> seasonList = new ArrayList<>();
-        String sql = "SELECT * FROM public.season";
+        String sql = "SELECT * FROM public.season ORDER BY season_id";
         try {
             ResultSet rs = this.connection.createStatement().executeQuery(sql);
             while (rs.next()) {

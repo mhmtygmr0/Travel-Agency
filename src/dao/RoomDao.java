@@ -18,7 +18,7 @@ public class RoomDao {
 
     public ArrayList<Room> findAll() {
         ArrayList<Room> roomList = new ArrayList<>();
-        String sql = "SELECT * FROM public.room";
+        String sql = "SELECT * FROM public.room ORDER BY room_id";
         try {
             ResultSet rs = this.connection.createStatement().executeQuery(sql);
             while (rs.next()) {
@@ -131,22 +131,8 @@ public class RoomDao {
         return true;
     }
 
-    public ArrayList<Room> selectByQuery(String query) {
-        ArrayList<Room> roomList = new ArrayList<>();
-        try {
-            ResultSet rs = this.connection.createStatement().executeQuery(query);
-            while (rs.next()) {
-                roomList.add(this.match(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return roomList;
-    }
-
-
     public boolean updateStock(Room room) {
-        String query = "UPDATE public.room SET stock = ? WHERE id = ? ";
+        String query = "UPDATE public.room SET stock = ? WHERE room_id = ? ";
         try {
             PreparedStatement pr = this.connection.prepareStatement(query);
             pr.setInt(1, room.getStock());
@@ -172,8 +158,6 @@ public class RoomDao {
         return true;
     }
 
-
-    // Oda bilgilerini güncelleyen metot
     public boolean update(Room room) {
         try {
             String query = "UPDATE public.room SET " +
@@ -192,7 +176,7 @@ public class RoomDao {
                     "cash_box = ?," +
                     "projection = ?," +
                     "gym = ?" +
-                    " WHERE id = ?";
+                    " WHERE room_id = ?";
 
             PreparedStatement pr = connection.prepareStatement(query);
             pr.setInt(1, room.getHotel_id());

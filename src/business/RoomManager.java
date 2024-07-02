@@ -4,8 +4,6 @@ import core.Helper;
 import dao.RoomDao;
 import entity.Room;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class RoomManager {
@@ -45,6 +43,7 @@ public class RoomManager {
             rowObject[i++] = obj.isGame_console();
             rowObject[i++] = obj.isCash_box();
             rowObject[i++] = obj.isProjection();
+            rowObject[i++] = obj.isGym();
             roomList.add(rowObject);
         }
         return roomList;
@@ -85,48 +84,5 @@ public class RoomManager {
     }
 
 
-    public ArrayList<Room> searchForTable(String hotelName, String cityName, String checkinDate, String checkoutDate, String adultNum, String childNum) {
-        String query = "SELECT * from public.room r " +
-                "LEFT JOIN public.hotel h ON r.hotel_id = h.id " +
-                "LEFT JOIN public.hotel_season s ON r.season_id = s.id WHERE";
 
-        ArrayList<String> whereList = new ArrayList<>();
-
-        whereList.add(" r.stock > " + 0);
-
-        checkinDate = LocalDate.parse(checkinDate, DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString();
-        checkoutDate = LocalDate.parse(checkoutDate, DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString();
-
-        whereList.add(" AND s.start_date <= '" + checkinDate + "'");
-        whereList.add(" AND s.end_date >='" + checkoutDate + "'");
-
-        if (hotelName != null) {
-            whereList.add(" AND h.name ILIKE '%" + hotelName + "%'");
-        }
-        if (cityName != null) {
-
-            whereList.add(" AND h.city ILIKE '%" + cityName + "%'");
-
-        }
-
-
-        if (adultNum != null && !adultNum.isEmpty() && childNum != null && !childNum.isEmpty()) {
-            try {
-                int adultNumber = Integer.parseInt(adultNum);
-                int childNumber = Integer.parseInt(childNum);
-                int totalNumber = adultNumber + childNumber;
-                whereList.add(" AND r.bed_capacity >= '" + (totalNumber) + "'");
-
-
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-
-            }
-            query += String.join("", whereList);
-            System.out.println(query);
-        }
-
-        ArrayList<Room> queryResult = this.roomDao.selectByQuery(query);
-        return queryResult;
-    }
 }
