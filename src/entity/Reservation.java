@@ -10,11 +10,16 @@ public class Reservation {
     private double total_price;
     private int guest_count;
     private String guest_name;
-    private String guess_citizen_id;
-    private String guess_phone;
-    private String guess_email;
+    private String guest_citizen_id;
+    private String guest_phone;
+    private String guest_email;
+    private int adult_count;
+    private int child_count;
 
-    public Reservation(int reservation_id, int room_id, LocalDate check_in_date, LocalDate check_out_date, double total_price, int guest_count, String guest_name, String guess_citizen_id, String guess_phone, String guess_email) {
+    public Reservation() {
+    }
+
+    public Reservation(int reservation_id, int room_id, LocalDate check_in_date, LocalDate check_out_date, double total_price, int guest_count, String guest_name, String guest_citizen_id, String guest_phone, String guest_email) {
         this.reservation_id = reservation_id;
         this.room_id = room_id;
         this.check_in_date = check_in_date;
@@ -22,9 +27,25 @@ public class Reservation {
         this.total_price = total_price;
         this.guest_count = guest_count;
         this.guest_name = guest_name;
-        this.guess_citizen_id = guess_citizen_id;
-        this.guess_phone = guess_phone;
-        this.guess_email = guess_email;
+        this.guest_citizen_id = guest_citizen_id;
+        this.guest_phone = guest_phone;
+        this.guest_email = guest_email;
+    }
+
+    public int getAdult_count() {
+        return adult_count;
+    }
+
+    public void setAdult_count(int adult_count) {
+        this.adult_count = adult_count;
+    }
+
+    public int getChild_count() {
+        return child_count;
+    }
+
+    public void setChild_count(int child_count) {
+        this.child_count = child_count;
     }
 
     public int getReservation_id() {
@@ -83,28 +104,28 @@ public class Reservation {
         this.guest_name = guest_name;
     }
 
-    public String getGuess_citizen_id() {
-        return guess_citizen_id;
+    public String getGuest_citizen_id() {
+        return guest_citizen_id;
     }
 
-    public void setGuess_citizen_id(String guess_citizen_id) {
-        this.guess_citizen_id = guess_citizen_id;
+    public void setGuest_citizen_id(String guest_citizen_id) {
+        this.guest_citizen_id = guest_citizen_id;
     }
 
-    public String getGuess_phone() {
-        return guess_phone;
+    public String getGuest_phone() {
+        return guest_phone;
     }
 
-    public void setGuess_phone(String guess_phone) {
-        this.guess_phone = guess_phone;
+    public void setGuest_phone(String guest_phone) {
+        this.guest_phone = guest_phone;
     }
 
-    public String getGuess_email() {
-        return guess_email;
+    public String getGuest_email() {
+        return guest_email;
     }
 
-    public void setGuess_email(String guess_email) {
-        this.guess_email = guess_email;
+    public void setGuest_email(String guest_email) {
+        this.guest_email = guest_email;
     }
 
     @Override
@@ -117,9 +138,9 @@ public class Reservation {
                 ", total_price=" + total_price +
                 ", guest_count=" + guest_count +
                 ", guest_name='" + guest_name + '\'' +
-                ", guess_citizen_id='" + guess_citizen_id + '\'' +
-                ", guess_phone='" + guess_phone + '\'' +
-                ", guess_email='" + guess_email + '\'' +
+                ", guess_citizen_id='" + guest_citizen_id + '\'' +
+                ", guess_phone='" + guest_phone + '\'' +
+                ", guess_email='" + guest_email + '\'' +
                 '}';
     }
 }

@@ -49,6 +49,9 @@ public class RoomManager {
         return roomList;
     }
 
+    public ArrayList<Room> searchForTable(String hotelName, String cityName, String startDate, String endDate){
+        return roomDao.searchForTable(hotelName, cityName, startDate, endDate);
+    }
 
     public boolean save(Room room) {
         if (room.getRoom_id() != 0) {
