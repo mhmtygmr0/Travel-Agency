@@ -8,7 +8,7 @@ public class Db {
 
 
     // Veritabanı bağlantı bilgileri
-    public static final String DB_URL = "jdbc:postgresql://localhost:5432/deneme2";
+    public static final String DB_URL = "jdbc:postgresql://localhost:5432/travel_agency";
     public static final String DB_USERNAME = "postgres";
     public static final String DB_PASSWORD = "mehmet";
 

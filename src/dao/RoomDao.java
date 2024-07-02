@@ -175,6 +175,7 @@ public class RoomDao {
         return true;
     }
 
+
     public boolean updateStock(Room room) {
         String query = "UPDATE public.room SET stock = ? WHERE room_id = ? ";
         try {
