@@ -13,6 +13,8 @@ import java.awt.event.*;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PersonelView extends Layout {
     private JPanel container;
@@ -128,11 +130,18 @@ public class PersonelView extends Layout {
      * Arayüz bileşenlerini yükler
      */
     public void loadComponent() {
+        // Şehirleri takip etmek için bir Set oluştur
+        Set<String> loadedCities = new HashSet<>();
 
         // Otelleri ve şehirleri yükle
         for (Hotel hotel : this.hotelManager.findAll()) {
-            this.cmb_hotel_name.addItem(hotel.getComboItem());
-            this.cmb_hotel_city.addItem(hotel.getHotel_address());
+            String city = hotel.getHotel_address();
+            // Eğer şehir daha önce eklenmemişse ComboBox'a ekle ve Set'e ekle
+            if (!loadedCities.contains(city)) {
+                this.cmb_hotel_name.addItem(hotel.getComboItem());
+                this.cmb_hotel_city.addItem(city);
+                loadedCities.add(city);
+            }
         }
         this.cmb_hotel_name.setSelectedIndex(-1);
         this.cmb_hotel_city.setSelectedIndex(-1);
