@@ -100,6 +100,7 @@ public class PersonelView extends Layout {
 
         // Arayüz bileşenlerini yükle
         this.loadComponent();
+        this.loadCombobaxs();
 
         // Otel tablosunu yükle
         this.loadHotelTable();
@@ -130,21 +131,6 @@ public class PersonelView extends Layout {
      * Arayüz bileşenlerini yükler
      */
     public void loadComponent() {
-        // Şehirleri takip etmek için bir Set oluştur
-        Set<String> loadedCities = new HashSet<>();
-
-        // Otelleri ve şehirleri yükle
-        for (Hotel hotel : this.hotelManager.findAll()) {
-            String city = hotel.getHotel_address();
-            // Eğer şehir daha önce eklenmemişse ComboBox'a ekle ve Set'e ekle
-            if (!loadedCities.contains(city)) {
-                this.cmb_hotel_name.addItem(hotel.getComboItem());
-                this.cmb_hotel_city.addItem(city);
-                loadedCities.add(city);
-            }
-        }
-        this.cmb_hotel_name.setSelectedIndex(-1);
-        this.cmb_hotel_city.setSelectedIndex(-1);
 
         // Çıkış yap butonu
         this.btn_logout.addActionListener(e -> {
@@ -161,6 +147,30 @@ public class PersonelView extends Layout {
             this.txt_children.setText("");
             this.loadRoomTable(null);
         });
+
+    }
+
+    public void loadCombobaxs() {
+
+        this.cmb_hotel_name.removeAllItems();
+        this.cmb_hotel_city.removeAllItems();
+
+        // Şehirleri takip etmek için bir Set oluştur
+        Set<String> loadedCities = new HashSet<>();
+
+        // Otelleri ve şehirleri yükle
+        for (Hotel hotel : this.hotelManager.findAll()) {
+            String city = hotel.getHotel_address();
+            this.cmb_hotel_name.addItem(hotel.getComboItem());
+            // Eğer şehir daha önce eklenmemişse ComboBox'a ekle ve Set'e ekle
+            if (!loadedCities.contains(city)) {
+                this.cmb_hotel_city.addItem(city);
+                loadedCities.add(city);
+            }
+        }
+
+        this.cmb_hotel_name.setSelectedIndex(-1);
+        this.cmb_hotel_city.setSelectedIndex(-1);
 
     }
 
@@ -267,6 +277,7 @@ public class PersonelView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadHotelTable();
+                    loadCombobaxs();
                 }
             });
         });
@@ -283,6 +294,7 @@ public class PersonelView extends Layout {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         loadHotelTable();
+                        loadCombobaxs();
                     }
                 });
             }
@@ -300,6 +312,7 @@ public class PersonelView extends Layout {
                     loadRoomTable(null);
                     loadSeasonTable();
                     loadReservationTable(null);
+                    loadCombobaxs();
                 } else {
                     Helper.showMsg("error");
                 }
@@ -334,7 +347,6 @@ public class PersonelView extends Layout {
                     loadSeasonTable();
                     loadRoomTable(null);
                     loadReservationTable(null);
-
                 } else {
                     Helper.showMsg("error");
                 }
@@ -370,7 +382,6 @@ public class PersonelView extends Layout {
                     loadPensionTable();
                     loadRoomTable(null);
                     loadReservationTable(null);
-
                 } else {
                     Helper.showMsg("error");
                 }
